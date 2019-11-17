@@ -45,6 +45,7 @@ public class TDNetwork : MonoBehaviourPunCallbacks
     public void GameStart()
     {
         Debug.Log("게임을 시작합니다.");
+        TDTower.Instance.gameOver = false;
     }
 
 

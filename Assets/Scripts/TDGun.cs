@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class TDGun : MonoBehaviour
 {
@@ -13,17 +14,12 @@ public class TDGun : MonoBehaviour
 
     public int gunPower = 1;    //공격력
 
+    public Sprite aimSprite = null; //나의 aim Sprite
+
     // Start is called before the first frame update
     void Start()
     {
         originScale = crossHairPrefab.transform.localScale;
-
-        //Aim 생성
-        if (crossHair == null)
-        {
-            crossHair = Instantiate(crossHairPrefab, Vector3.zero, Quaternion.identity).transform;
-            crossHair.localScale = originScale;
-        }
     }
 
     // Update is called once per frame
@@ -31,6 +27,15 @@ public class TDGun : MonoBehaviour
     {
         if (TDTower.Instance.gameOver)
             return;
+
+        //Aim 생성
+        if (crossHair == null)
+        {
+            //crossHair = Instantiate(crossHairPrefab, Vector3.zero, Quaternion.identity).transform;
+            crossHair = PhotonNetwork.Instantiate("Prefabs/Crosshair", Vector3.zero, Quaternion.identity).transform;
+            crossHair.localScale = originScale;
+            crossHair.GetComponent<SpriteRenderer>().sprite = aimSprite;
+        }
 
         //카메라에서 앞 방향으로 쏘는 레이 생성
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);

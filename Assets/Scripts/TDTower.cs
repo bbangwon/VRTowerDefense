@@ -15,7 +15,7 @@ public class TDTower : MonoBehaviour
 
     public Slider hpSlider;
 
-    internal bool gameOver = false;
+    internal bool gameOver = true;
     public GameObject GameOverUi;
 
 

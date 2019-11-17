@@ -1253,6 +1253,7 @@ MonoBehaviour:
     type: 3}
   autoFireTime: 0.5
   gunPower: 1
+  aimSprite: {fileID: 21300000, guid: 87d2cf2bdcead6d49af39eadbe5d79a5, type: 3}
 --- !u!1001 &1111496496
 PrefabInstance:
   m_ObjectHideFlags: 0

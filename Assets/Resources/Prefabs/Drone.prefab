@@ -562,6 +562,9 @@ MonoBehaviour:
   explosion: {fileID: 100006, guid: 8a4aceaf2957c044480166b429f4c7d0, type: 3}
   maxHp: 1
   hpSlider: {fileID: 7849556071117098388}
+  attackTime: 5
+  attackRange: 3
+  attackPower: 1
 --- !u!135 &5662544049174890105
 SphereCollider:
   m_ObjectHideFlags: 0

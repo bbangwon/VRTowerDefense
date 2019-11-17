@@ -29,6 +29,9 @@ public class TDGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (TDTower.Instance.gameOver)
+            return;
+
         //카메라에서 앞 방향으로 쏘는 레이 생성
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 

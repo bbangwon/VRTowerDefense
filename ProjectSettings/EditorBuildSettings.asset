@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/VRTowerDefense.unity
+    guid: 621cade4427b8d8498307b4978a758a2
   m_configObjects: {}

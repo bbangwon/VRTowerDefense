@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class TDDroneSpawner : MonoBehaviour
 {
@@ -24,11 +25,12 @@ public class TDDroneSpawner : MonoBehaviour
     {
         while(true)
         {
-            if(!TDTower.Instance.gameOver)  //게임 오버후에는 생성하지 않도록
+            if(!TDTower.Instance.gameOver && PhotonNetwork.IsMasterClient)  //게임 오버후에는 생성하지 않도록
             {
                 //일정시간 이후 드론을 생성 한다.
                 yield return new WaitForSeconds(Random.Range(minTime, maxTime));
-                Instantiate(dronePrefab, transform.position, Quaternion.identity);
+                //Instantiate(dronePrefab, transform.position, Quaternion.identity);
+                PhotonNetwork.InstantiateSceneObject("Prefabs/Drone", transform.position, Quaternion.identity);
             }
             else
             {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class TDDrone : MonoBehaviour
+public class TDDrone : MonoBehaviourPun
 {
     NavMeshAgent agent;
 
@@ -25,7 +26,11 @@ public class TDDrone : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.destination = TDTower.Instance.transform.position;
+        //agent.destination = TDTower.Instance.transform.position;
+        if (photonView.IsMine)
+            agent.destination = TDTower.Instance.transform.position;    //MasterClient가 조종
+        else
+            agent.enabled = false;
 
         currentHp = maxHp;  //체력 세팅
 
@@ -70,7 +75,9 @@ public class TDDrone : MonoBehaviour
             explosionGO.GetComponent<AudioSource>().Play();
 
             //적 제거
-            Destroy(gameObject);
+            
+            //아직 Destroy에 대한 동기화 전이므로..
+            //Destroy(gameObject);
         }
     }
 }

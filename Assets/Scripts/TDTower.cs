@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class TDTower : MonoBehaviour
+public class TDTower : MonoBehaviourPun, IPunObservable
 {
     //싱글턴
     static TDTower _instance = null;
@@ -37,7 +38,8 @@ public class TDTower : MonoBehaviour
         
     }
 
-    public void Damage(int enemyPower)
+    [PunRPC]
+    public void RpcDamage(int damage)
     {
         currentHp--;
         hpSlider.value = currentHp;
@@ -45,8 +47,17 @@ public class TDTower : MonoBehaviour
         {
             gameOver = true;
             GameOverUi.SetActive(true);
+
             StartCoroutine(RestartCountdown());
         }
+    }
+
+    public void Damage(int enemyPower)
+    {
+        // 데미지는 MasterClient 만 계산한다. 타워 HP는 공유 하기 때문에 서버에서만 계산하여
+        // HP를 공유하고 게임오버를 공유한다.
+        if (PhotonNetwork.IsMasterClient)
+            photonView.RPC("RpcDamage", RpcTarget.All, enemyPower);
     }
 
     //게임 오버후 자동 카운트 다운후 게임 다시 시작
@@ -64,5 +75,18 @@ public class TDTower : MonoBehaviour
         }
 
         SceneManager.LoadScene(0);
+    }
+
+    //타워 HP 동기화
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(currentHp);
+        }
+        else
+        {
+            currentHp = (int)stream.ReceiveNext();
+        }
     }
 }

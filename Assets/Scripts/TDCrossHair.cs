@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class TDCrossHair : MonoBehaviour
+public class TDCrossHair : MonoBehaviourPun
 {
     public GameObject bulletImpactPrefab;
     Transform bulletImpact;
@@ -14,7 +15,8 @@ public class TDCrossHair : MonoBehaviour
         bulletImpact = Instantiate(bulletImpactPrefab).transform;
     }
 
-    public void Fire()
+    [PunRPC]
+    void RpcFire()
     {
         //총알 파티클 재생
         bulletImpact.position = transform.position;
@@ -24,6 +26,11 @@ public class TDCrossHair : MonoBehaviour
         //사운드 재생
         bulletImpact.GetComponent<AudioSource>().Stop();
         bulletImpact.GetComponent<AudioSource>().Play();
+    }
+
+    public void Fire()
+    {
+        photonView.RPC("RpcFire", RpcTarget.All);
     }
 
 

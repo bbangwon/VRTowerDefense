@@ -66,6 +66,10 @@ public class TDTower : MonoBehaviourPun, IPunObservable
         int count = 10;
         while (count > 0)
         {
+            //씬 이동 전 모든 오브젝트들을 삭제하여 더이상 동기화 할 오브젝트가 없도록 한다
+            if (count == 5 && PhotonNetwork.IsMasterClient)
+                PhotonNetwork.DestroyAll();     
+
             //5초가 남았을때 부터 카운트 다운을 보여준다.
             if (count <= 5)
                 GameOverUi.GetComponent<Text>().text = "ReGame " + count;

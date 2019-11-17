@@ -29,6 +29,12 @@ public class TDDroneSpawner : MonoBehaviour
             {
                 //일정시간 이후 드론을 생성 한다.
                 yield return new WaitForSeconds(Random.Range(minTime, maxTime));
+
+                //Wait For Second이후 gameOver가 발생하면 Drone을 생성하게 되고
+                //이후 씬 이동시 동기화가 엉킬수도 있음.
+                if (TDTower.Instance.gameOver)  
+                    break;
+
                 //Instantiate(dronePrefab, transform.position, Quaternion.identity);
                 PhotonNetwork.InstantiateSceneObject("Prefabs/Drone", transform.position, Quaternion.identity);
             }

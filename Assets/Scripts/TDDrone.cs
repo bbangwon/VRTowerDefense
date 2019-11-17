@@ -59,7 +59,8 @@ public class TDDrone : MonoBehaviourPun
         }
     }
 
-    public void Damage(int damage)
+    [PunRPC]    //원격호출
+    void RpcDamage(int damage)
     {
         currentHp -= damage;
         hpSlider.value = currentHp;
@@ -74,10 +75,13 @@ public class TDDrone : MonoBehaviourPun
             explosionGO.GetComponent<AudioSource>().Stop();
             explosionGO.GetComponent<AudioSource>().Play();
 
-            //적 제거
-            
-            //아직 Destroy에 대한 동기화 전이므로..
-            //Destroy(gameObject);
+            if (PhotonNetwork.IsMasterClient)
+                PhotonNetwork.Destroy(gameObject);
         }
+    }
+
+    public void Damage(int damage)
+    {
+        photonView.RPC("RpcDamage", RpcTarget.All, damage);
     }
 }

@@ -11,6 +11,8 @@ public class TDGun : MonoBehaviour
     public float autoFireTime = 0.5f;   //자동 공격 시간
     float calcAutoFireTime = 0f;
 
+    public int gunPower = 1;    //공격력
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +46,16 @@ public class TDGun : MonoBehaviour
             if (calcAutoFireTime >= autoFireTime)
             {
                 calcAutoFireTime = 0f;
-                crossHair.GetComponent<TDCrossHair>().Fire();
+
+                if (hitInfo.collider.tag == "Enemy")
+                {
+                    //적에게 데미지를 준다.
+                    hitInfo.collider.GetComponent<TDDrone>().Damage(gunPower);
+                }
+                else
+                {
+                    crossHair.GetComponent<TDCrossHair>().Fire();
+                }
             }
         }
     }
